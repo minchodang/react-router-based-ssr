@@ -1,15 +1,17 @@
-import { Outlet, Scripts, ScrollRestoration, isRouteErrorResponse } from 'react-router';
+import { Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, redirect } from 'react-router';
 import appStylesHref from './app.css?url';
-import { getContacts } from './data';
+import { createEmptyContact, getContacts } from './data';
 import type { Route } from './+types/root';
+
+export async function action() {
+    const contact = await createEmptyContact();
+    return redirect(`/contacts/${contact.id}/edit`);
+}
 
 export default function App() {
     return <Outlet />;
 }
 
-// The Layout component is a special export for the root route.
-// It acts as your document's "app shell" for all route components, HydrateFallback, and ErrorBoundary
-// For more information, see https://reactrouter.com/explanation/special-files#layout-export
 export function Layout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
